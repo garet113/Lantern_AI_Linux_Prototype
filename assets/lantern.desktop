@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=LANTERN AI
+Comment=Private local AI chat
+Exec=python3 /opt/lantern/lantern_ai.py
+Icon=utilities-terminal
+Terminal=false
+Categories=Utility;Education;

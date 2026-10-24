@@ -1,0 +1,44 @@
+Lantern AI Linux 0.2 — code review and build attempt
+
+PASS: Python compilation.
+PASS: Four mocked AI API tests: local payload/proxy bypass, network failure,
+      invalid JSON, and rejection of non-text replies.
+PASS: Bash syntax for build, desktop installer, theme hook and VM launcher.
+PASS: Wallpaper SVG and XFCE XML parse; desktop launcher target matches app.
+PASS: No prior company branding remains in source or documentation.
+PASS: Build rejects unsupported host before attempting package changes.
+PASS: Boot launcher rejects missing ISO without claiming success.
+
+REVIEW FIXES
+- Enforce Debian 13 host rather than checking CPU architecture alone.
+- Request BIOS syslinux and UEFI GRUB explicitly; match installer distribution.
+- Ignore environment HTTP proxies for local chat requests.
+- Validate AI response content is text.
+- Reset conversation when the selected model changes.
+- Provide interactive BIOS/UEFI live-boot launcher and acceptance checklist.
+
+BUILD: BLOCKED, NO ISO PRODUCED.
+Environment: Ubuntu 24.04 container, amd64; no live-build/debootstrap/xorriso,
+QEMU, Xvfb, or /dev/kvm. Effective Linux capabilities are zero.
+Attempted apt-get update returned status 100, including:
+  setgroups 65534 failed: Operation not permitted
+  seteuid 42 failed: Invalid argument
+  Method https has died unexpectedly
+The corrected build script rejects this Ubuntu host with:
+  Build on Debian 13 amd64, preferably in a fresh VM.
+This is an environment limitation; the image configuration has not been
+validated by a real live-build run. No attempt was made to bypass restrictions.
+
+BOOT: NOT RUN; no ISO and no QEMU available.
+GUI: NOT RUN; no graphical test server available.
+REAL MODEL INFERENCE: NOT RUN; only mocked API tests completed.
+INSTALLATION / HARDWARE / SECURE BOOT: NOT TESTED.
+
+NEXT ENVIRONMENT
+A Debian 13 amd64 VM with sudo, internet and at least 30 GB free build space:
+  sudo bash build-iso.sh
+  sudo apt-get install qemu-system-x86 ovmf
+  bash boot-test.sh bios
+  bash boot-test.sh uefi
+Then follow BOOT_CHECKLIST.md, including separate blank-disk install/reboot and
+real offline inference checks. Source tests are not a bootability guarantee.
